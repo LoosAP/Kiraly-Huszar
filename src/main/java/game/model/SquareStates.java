@@ -1,4 +1,8 @@
 package game.model;
 
-public class SquareStates {
+public enum SquareStates {
+    NONE,
+    KING,
+    KNIGHT,
+    GOAL
 }
