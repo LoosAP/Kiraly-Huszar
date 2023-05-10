@@ -2,6 +2,7 @@ package game;
 
 import game.model.GameModel;
 import javafx.beans.binding.ObjectBinding;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -40,4 +41,27 @@ public class GameController {
         model.move(row, col);
     }
 
+    public void onNewGame(ActionEvent actionEvent) {
+    }
+
+    public void onSave(ActionEvent actionEvent) {
+    }
+
+    public void onLoad(ActionEvent actionEvent) {
+    }
+
+    public void onExit(ActionEvent actionEvent) {
+    }
+
+    public void onUndo(ActionEvent actionEvent) {
+    }
+
+    public void onRedo(ActionEvent actionEvent) {
+    }
+
+    public void onHints(ActionEvent actionEvent) {
+    }
+
+    public void onAbout(ActionEvent actionEvent) {
+    }
 }
