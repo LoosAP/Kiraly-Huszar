@@ -27,4 +27,20 @@ public class GameModel {
 
     public void move(Integer row, Integer col) {
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (var i = 0; i < SIZE; i++) {
+            for (var j = 0; j < SIZE; j++) {
+                sb.append(board[i][j].get().ordinal()).append(' ');
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        var model = new GameModel();
+        System.out.println(model);
+    }
 }
