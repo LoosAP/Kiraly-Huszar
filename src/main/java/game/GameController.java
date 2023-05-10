@@ -4,6 +4,8 @@ import game.model.GameModel;
 import javafx.beans.binding.ObjectBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -30,7 +32,29 @@ public class GameController {
         }
     }
     private StackPane createSquare(int i, int j) {
-        return null;
+        var square = new StackPane();
+        square.getStyleClass().add("square");
+        var piece = new ImageView();
+
+        piece.imageProperty().bind(
+                new ObjectBinding<Image>() {
+                    {
+                        super.bind(model.squareProperty(i, j));
+                    }
+                    @Override
+                    protected Image computeValue() {
+                        return switch (model.squareProperty(i, j).get()) {
+                            case KNIGHT -> new Image(getClass().getResourceAsStream("/knight.png"));
+                            case KING -> new Image(getClass().getResourceAsStream("/king.png"));
+                            case GOAL -> new Image(getClass().getResourceAsStream("/goal.png"));
+                            default -> null;
+                        };
+                    }
+                }
+        );
+        square.getChildren().add(piece);
+        square.setOnMouseClicked(this::handleMouseClick);
+        return square;
     }
     @FXML
     private void handleMouseClick(MouseEvent event) {
