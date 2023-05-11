@@ -36,6 +36,12 @@ public class GameController {
     private StackPane createSquare(int i, int j) {
         var square = new StackPane();
         square.getStyleClass().add("square");
+        if ( (i+j) % 2 == 1 ){
+            square.setStyle("-fx-background-color: #9DC08B");
+        }
+        else {
+            square.setStyle("-fx-background-color: #EDF1D6");
+        }
         var piece = new ImageView();
 
         piece.imageProperty().bind(
