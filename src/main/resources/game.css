@@ -1,7 +1,7 @@
-.square:nth-child(even) {
+.square > *:nth-child(2n) {
     -fx-background-color: #9DC08B;
 }
 
-.square:nth-child(odd) {
+.square > *:nth-child(2n+1) {
     -fx-background-color : #EDF1D6;
 }
