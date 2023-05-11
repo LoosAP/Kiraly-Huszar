@@ -8,7 +8,7 @@ public class GameModel {
 
     public static int SIZE = 8;
 
-    public ReadOnlyObjectWrapper<SquareStates>[][] board = new ReadOnlyObjectWrapper[SIZE][SIZE];
+    private ReadOnlyObjectWrapper<SquareStates>[][] board = new ReadOnlyObjectWrapper[SIZE][SIZE];
     public GameModel() {
         for (var i = 0; i < SIZE; i++) {
             for (var j = 0; j < SIZE; j++) {
@@ -45,6 +45,10 @@ public class GameModel {
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    public void setBoard(int x,int y, SquareStates state) {
+        board[x][y].set(state);
     }
 
     public static void main(String[] args) {
