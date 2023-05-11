@@ -77,7 +77,7 @@ public class GameController {
         for (var i = 0; i < board.getRowCount(); i++) {
             for (var j = 0; j < board.getColumnCount(); j++) {
 
-                model.board[i][j].set(NONE);
+                model.setBoard(i,j,NONE);
             }
         }
         Random random = new Random();
@@ -86,22 +86,22 @@ public class GameController {
         int goalX = random.nextInt(8);
         int goalY = random.nextInt(8);
         if (boardX == 7){
-            model.board[boardX][boardY].set(KNIGHT);
-            model.board[boardX-1][boardY].set(KING);
+            model.setBoard(boardX,boardY,KNIGHT);
+            model.setBoard(boardX-1,boardY,KING);
             while ((goalX == boardX && goalY == boardY) || (goalX == boardX-1 && goalY == boardY)){
                 goalX = random.nextInt(8);
                 goalY = random.nextInt(8);
             }
-            model.board[goalX][goalY].set(GOAL);
+            model.setBoard(goalX,goalY,GOAL);
         }
         else {
-            model.board[boardX][boardY].set(KNIGHT);
-            model.board[boardX+1][boardY].set(KING);
+            model.setBoard(boardX,boardY,KNIGHT);
+            model.setBoard(boardX+1,boardY,KING);
             while ((goalX == boardX && goalY == boardY) || (goalX == boardX+1 && goalY == boardY)){
                 goalX = random.nextInt(8);
                 goalY = random.nextInt(8);
             }
-            model.board[goalX][goalY].set(GOAL);
+            model.setBoard(goalX,goalY,GOAL);
         }
 
 
