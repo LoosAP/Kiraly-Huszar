@@ -26,14 +26,14 @@ public class GameModel {
     }
 
     public void move(Integer row, Integer col) {
-        board[row][col].set(
+        /*board[row][col].set(
                 switch (board[row][col].get()){
                     case KNIGHT -> null;
                     case NONE -> null;
                     case KING -> null;
                     case GOAL -> null;
                 }
-        );
+        );*/
     }
 
     public String toString() {
