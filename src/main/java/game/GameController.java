@@ -14,12 +14,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
+import java.util.List;
 import java.util.Random;
 
 import static game.model.GameModel.SIZE;
 import static game.model.SquareStates.*;
 
 public class GameController {
+
 
     @FXML
     private GridPane board;
@@ -82,30 +84,33 @@ public class GameController {
         SquareStates newSelectedState = model.getSquareState(row,col);
         // if the clicked square is empty and a chess piece is selected
         if (newSelectedState == NONE && selectedPiece != null){
-            if (canMovePiece(selectedPiece)){
+            if (model.canMovePiece(row,col,selectedPiece)){
                 model.move(row,col,selectedPiece);
 
                 selectedPiece = null;
             }
+            else {
+                System.out.printf("%s cannot move to (%d,%d)%n",selectedPiece,row,col);
+            }
         }
         // TODO: if successfully moved into goal
 
-        //if the selectedPiece is null and clicked on a square occupied by a valid chess piece
+        // if the selectedPiece is null and clicked on a square occupied by a valid chess piece
         else if (selectedPiece == null && newSelectedState != NONE && newSelectedState != GOAL){
             selectedPiece = newSelectedState;
 
             System.out.printf("Selected %s on square (%d,%d)%n",selectedPiece,row,col);
         }
+        // if clicked on the same piece as before
+        else if (selectedPiece == newSelectedState){
+            System.out.printf("Deselected %s %n",selectedPiece);
+            selectedPiece = null;
+        }
+
     }
 
-    //checks if the move we want to perform is valid
-    private boolean canMovePiece(SquareStates selectedPiece) {
-        switch (selectedPiece){
-            case KING -> {}
-            case KNIGHT -> {}
-        }
-        return true;
-    }
+
+
 
     public void onNewGame(ActionEvent actionEvent) {
         for (var i = 0; i < board.getRowCount(); i++) {
