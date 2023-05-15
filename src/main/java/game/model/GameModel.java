@@ -8,13 +8,33 @@ public class GameModel {
 
     public static int SIZE = 8;
 
+    private int kingRow;
+    private int kingCol;
+
+    private int knightRow;
+    private int knightCol;
+
     private ReadOnlyObjectWrapper<SquareStates>[][] board = new ReadOnlyObjectWrapper[SIZE][SIZE];
     public GameModel() {
+        initializeBoard();
+    }
+
+    private void initializeBoard(){
         for (var i = 0; i < SIZE; i++) {
             for (var j = 0; j < SIZE; j++) {
                 board[i][j] = new ReadOnlyObjectWrapper<SquareStates>(SquareStates.NONE);
             }
         }
+
+        kingRow = 5;
+        kingCol = 2;
+        board[kingRow][kingCol] = new ReadOnlyObjectWrapper<SquareStates>(SquareStates.KING);
+
+        knightRow = 5;
+        knightCol = 3;
+        board[knightRow][knightCol] = new ReadOnlyObjectWrapper<SquareStates>(SquareStates.KNIGHT);
+
+        board[3][3] = new ReadOnlyObjectWrapper<SquareStates>(SquareStates.GOAL);
     }
 
     public ReadOnlyObjectProperty<SquareStates> squareProperty(int i, int j) {
@@ -25,15 +45,39 @@ public class GameModel {
         return board[i][j].get();
     }
 
-    public void move(Integer row, Integer col) {
-        /*board[row][col].set(
-                switch (board[row][col].get()){
-                    case KNIGHT -> null;
-                    case NONE -> null;
-                    case KING -> null;
-                    case GOAL -> null;
-                }
-        );*/
+    public void move(Integer row, Integer col,SquareStates currentSquare) {
+
+
+        switch (currentSquare) {
+            case KING -> {
+                // Move king to new position
+                board[row][col].set(SquareStates.KING);
+                // Clear old position
+                board[kingRow][kingCol].set(SquareStates.NONE);
+                // Update king's position
+                setKing(row,col);
+            }
+            case KNIGHT -> {
+                // Move knight to new position
+                board[row][col].set(SquareStates.KNIGHT);
+                // Clear old position
+                board[knightRow][knightCol].set(SquareStates.NONE);
+                // Update knight's position
+                setKnight(row,col);
+            }
+            default -> {
+            }
+            // Invalid move - do nothing
+        }
+    }
+
+    public void setKing(Integer row, Integer col){
+        kingRow = row;
+        kingCol = col;
+    }
+    public void setKnight(Integer row, Integer col){
+        knightRow = row;
+        knightCol = col;
     }
 
     public String toString() {
