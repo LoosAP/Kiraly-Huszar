@@ -6,7 +6,7 @@
     <groupId>hu.unideb.inf</groupId>
     <artifactId>homework-project-LoosAP</artifactId>
     <version>1.0</version>
-    <description><!-- TODO: a short description of your project --></description>
+    <description>Adott egy sakktábla, amelyre egy huszárt és egy királyt helyezünk. A feladat az, hogy valamelyik figurával a megjelölt mezőre lépjünk. Csak azzal a figurával lehet lépni a sakklépéseknek megfelelően, amelyik éppen ütésben van a másik által.</description>
     <developers>
         <developer>
             <id>loosap</id>
@@ -26,7 +26,7 @@
         <maven.checkstyle.version>3.2.1</maven.checkstyle.version>
         <maven.surefire.version>3.0.0</maven.surefire.version>
         <jacoco.version>0.8.9</jacoco.version>
-        <exec.mainClass><!-- TODO: the main class of your application that contains the main method --></exec.mainClass>
+        <exec.mainClass>game.Main</exec.mainClass>
     </properties>
     <dependencies>
         <dependency>
