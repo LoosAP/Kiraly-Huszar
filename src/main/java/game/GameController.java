@@ -1,6 +1,7 @@
 package game;
 
 import game.model.GameModel;
+import game.model.SquareStates;
 import javafx.beans.binding.ObjectBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.shape.Circle;
 
 import java.util.Random;
 
+import static game.model.GameModel.SIZE;
 import static game.model.SquareStates.*;
 
 public class GameController {
@@ -64,13 +66,45 @@ public class GameController {
         square.setOnMouseClicked(this::handleMouseClick);
         return square;
     }
+
+    private SquareStates selectedPiece = null;
     @FXML
     private void handleMouseClick(MouseEvent event) {
         var square = (StackPane) event.getSource();
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
-        System.out.printf("Click on square (%d,%d)%n", row, col);
-        model.move(row, col);
+
+        //check if the selected square is within valid ranges
+        if (row <= 0 || row > SIZE || col <= 0 || col > SIZE) {
+            return;
+        }
+        // the state of the newly clicked square
+        SquareStates newSelectedState = model.getSquareState(row,col);
+        // if the clicked square is empty and a chess piece is selected
+        if (newSelectedState == NONE && selectedPiece != null){
+            if (canMovePiece(selectedPiece)){
+                model.move(row,col,selectedPiece);
+
+                selectedPiece = null;
+            }
+        }
+        // TODO: if successfully moved into goal
+
+        //if the selectedPiece is null and clicked on a square occupied by a valid chess piece
+        else if (selectedPiece == null && newSelectedState != NONE && newSelectedState != GOAL){
+            selectedPiece = newSelectedState;
+
+            System.out.printf("Selected %s on square (%d,%d)%n",selectedPiece,row,col);
+        }
+    }
+
+    //checks if the move we want to perform is valid
+    private boolean canMovePiece(SquareStates selectedPiece) {
+        switch (selectedPiece){
+            case KING -> {}
+            case KNIGHT -> {}
+        }
+        return true;
     }
 
     public void onNewGame(ActionEvent actionEvent) {
