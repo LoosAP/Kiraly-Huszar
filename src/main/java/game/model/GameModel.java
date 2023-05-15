@@ -4,9 +4,13 @@ import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 
+import java.util.List;
+
 public class GameModel {
 
     public static int SIZE = 8;
+
+    private static final int[][] VALID_MOVES = {{-2,-1},{-2,1},{-1,-2},{-1,2},{1,-2},{1,2},{2,-1},{2,1}};
 
     private int kingRow;
     private int kingCol;
@@ -46,6 +50,49 @@ public class GameModel {
     public SquareStates getSquareState(int i, int j){
         return board[i][j].get();
     }
+    public void setKing(Integer row, Integer col){
+        kingRow = row;
+        kingCol = col;
+    }
+    public void setKnight(Integer row, Integer col){
+        knightRow = row;
+        knightCol = col;
+    }
+
+    public void setGoal(Integer row, Integer col){
+        goalRow = row;
+        goalCol = col;
+    }
+
+    public void setBoard(int x,int y, SquareStates state) {
+        board[x][y].set(state);
+    }
+    //checks if the move we want to perform is valid
+    public boolean canMovePiece(Integer row,Integer col,SquareStates selectedPiece) {
+        switch (selectedPiece){
+            case KING -> {
+                if ((row == kingRow && col == kingCol) || Math.abs(row - kingRow) > 1 || Math.abs(col - kingCol) > 1) {
+                    return false;
+                }
+                return true;
+            }
+            case KNIGHT -> {
+                if ((row == knightRow && col == knightCol) || row < 0 || col < 0 || row >= SIZE || col >= SIZE) {
+                    return false;
+                }
+                for (int i = 0; i < VALID_MOVES.length; i++) {
+                    int newRow = knightRow + VALID_MOVES[i][0];
+                    int newCol = knightCol + VALID_MOVES[i][1];
+                    if (newRow == row && newCol == col) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
 
     public void move(Integer row, Integer col,SquareStates currentSquare) {
 
@@ -73,19 +120,7 @@ public class GameModel {
         }
     }
 
-    public void setKing(Integer row, Integer col){
-        kingRow = row;
-        kingCol = col;
-    }
-    public void setKnight(Integer row, Integer col){
-        knightRow = row;
-        knightCol = col;
-    }
 
-    public void setGoal(Integer row, Integer col){
-        goalRow = row;
-        goalCol = col;
-    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -98,9 +133,7 @@ public class GameModel {
         return sb.toString();
     }
 
-    public void setBoard(int x,int y, SquareStates state) {
-        board[x][y].set(state);
-    }
+
 
     public static void main(String[] args) {
         var model = new GameModel();
