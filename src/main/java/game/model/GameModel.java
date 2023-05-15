@@ -14,6 +14,9 @@ public class GameModel {
     private int knightRow;
     private int knightCol;
 
+    private int goalRow;
+    private int goalCol;
+
     private ReadOnlyObjectWrapper<SquareStates>[][] board = new ReadOnlyObjectWrapper[SIZE][SIZE];
     public GameModel() {
         initializeBoard();
@@ -26,15 +29,14 @@ public class GameModel {
             }
         }
 
-        kingRow = 5;
-        kingCol = 2;
+        setKing(5,1);
         board[kingRow][kingCol] = new ReadOnlyObjectWrapper<SquareStates>(SquareStates.KING);
 
-        knightRow = 5;
-        knightCol = 3;
+        setKnight(5,2);
         board[knightRow][knightCol] = new ReadOnlyObjectWrapper<SquareStates>(SquareStates.KNIGHT);
 
-        board[3][3] = new ReadOnlyObjectWrapper<SquareStates>(SquareStates.GOAL);
+        setGoal(7,6);
+        board[goalRow][goalCol] = new ReadOnlyObjectWrapper<SquareStates>(SquareStates.GOAL);
     }
 
     public ReadOnlyObjectProperty<SquareStates> squareProperty(int i, int j) {
@@ -78,6 +80,11 @@ public class GameModel {
     public void setKnight(Integer row, Integer col){
         knightRow = row;
         knightCol = col;
+    }
+
+    public void setGoal(Integer row, Integer col){
+        goalRow = row;
+        goalCol = col;
     }
 
     public String toString() {
