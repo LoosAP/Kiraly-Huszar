@@ -77,7 +77,7 @@ public class GameController {
         var col = GridPane.getColumnIndex(square);
 
         //check if the selected square is within valid ranges
-        if (row <= 0 || row > SIZE || col <= 0 || col > SIZE) {
+        if (row < 0 || row > SIZE || col < 0 || col > SIZE) {
             return;
         }
         // the state of the newly clicked square
