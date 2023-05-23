@@ -135,37 +135,44 @@ public class GameController {
 
 
     public void onNewGame(ActionEvent actionEvent) {
-        for (var i = 0; i < board.getRowCount(); i++) {
-            for (var j = 0; j < board.getColumnCount(); j++) {
+        // reset variables
+        selectedPiece = null;
+        model.clearBoard();
 
-                model.setBoard(i,j,NONE);
-            }
-        }
+        // Generating random numbers
         Random random = new Random();
-        int boardX = random.nextInt(8);
-        int boardY = random.nextInt(8);
+        int kingX = random.nextInt(8);
+        int kingY = random.nextInt(8);
+        int knightX = random.nextInt(8);
+        int knightY = random.nextInt(8);
         int goalX = random.nextInt(8);
         int goalY = random.nextInt(8);
-        if (boardX == 7){
-            model.setBoard(boardX,boardY,KNIGHT);
-            model.setBoard(boardX-1,boardY,KING);
-            while ((goalX == boardX && goalY == boardY) || (goalX == boardX-1 && goalY == boardY)){
-                goalX = random.nextInt(8);
-                goalY = random.nextInt(8);
-            }
-            model.setBoard(goalX,goalY,GOAL);
-        }
-        else {
-            model.setBoard(boardX,boardY,KNIGHT);
-            model.setBoard(boardX+1,boardY,KING);
-            while ((goalX == boardX && goalY == boardY) || (goalX == boardX+1 && goalY == boardY)){
-                goalX = random.nextInt(8);
-                goalY = random.nextInt(8);
-            }
-            model.setBoard(goalX,goalY,GOAL);
-        }
+
+        model.setKing(kingX,kingY);
+        model.setKnight(knightX,knightY);
+
+        // Checks if the random numbers are the same and at least one piece is in check
+        while (!model.isInCheck(KING) && !model.isInCheck(KNIGHT) || kingX == knightX || kingY == knightY){
+
+                knightX = random.nextInt(8);
+                knightY = random.nextInt(8);
+                kingX = random.nextInt(8);
+                kingY = random.nextInt(8);
+                model.setKing(kingX,kingY);
+                model.setKnight(knightX,knightY);
 
 
+        }
+        model.setBoard(kingX,kingY, KING);
+        model.setBoard(knightX,knightY, KNIGHT);
+
+        while ((goalX == kingX && goalY == kingY) || (goalX == knightX && goalY == knightY)){
+            goalX = random.nextInt(8);
+            goalY = random.nextInt(8);
+        }
+
+        model.setBoard(goalX,goalY, GOAL);
+        model.setGoal(goalX,goalY);
     }
 
     public void onSave(ActionEvent actionEvent) {
