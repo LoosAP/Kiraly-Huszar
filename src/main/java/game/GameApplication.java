@@ -30,6 +30,7 @@ public class GameApplication extends Application {
         });
     }
 
+    // method to close the program
     private void closeProgram(Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit");
