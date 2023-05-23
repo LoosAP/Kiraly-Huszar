@@ -64,6 +64,14 @@ public class GameModel {
         goalCol = col;
     }
 
+    public void clearBoard(){
+        for (var i = 0; i < SIZE; i++) {
+            for (var j = 0; j < SIZE; j++) {
+                board[i][j].set(SquareStates.NONE);
+            }
+        }
+    }
+
     public void setBoard(int x,int y, SquareStates state) {
         board[x][y].set(state);
     }
