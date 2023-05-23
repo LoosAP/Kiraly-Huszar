@@ -93,6 +93,30 @@ public class GameModel {
         return false;
     }
 
+    public boolean isInCheck(SquareStates selectedPiece) {
+        switch (selectedPiece){
+            case KING -> {
+                // Check if king is in check by the knight
+                for (int i = 0; i < VALID_MOVES.length; i++) {
+                    int newRow = kingRow + VALID_MOVES[i][0];
+                    int newCol = kingCol + VALID_MOVES[i][1];
+                    if (newRow == knightRow && newCol == knightCol) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            case KNIGHT -> {
+                // Check if knight is in check by the king
+                if (Math.abs(kingRow - knightRow) <= 1 && Math.abs(kingCol - knightCol) <= 1) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
 
     public void move(Integer row, Integer col,SquareStates currentSquare) {
 
