@@ -12,15 +12,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Random;
 
@@ -34,6 +30,9 @@ public class GameController {
     private GridPane board;
 
     private GameModel model = new GameModel();
+
+    // tracks the moves made by the player
+    ArrayList<MoveTracker> undoTracker = new ArrayList<>();
 
     @FXML
     private void initialize(){
@@ -92,6 +91,7 @@ public class GameController {
         // if the clicked square is empty and a chess piece is selected
         if (newSelectedState == NONE && selectedPiece != null){
             if (model.canMovePiece(row,col,selectedPiece)){
+                undoTracker.add(new MoveTracker(row,col,selectedPiece,model.getRow(selectedPiece),model.getCol(selectedPiece)));
                 model.move(row,col,selectedPiece);
 
                 selectedPiece = null;
@@ -141,6 +141,7 @@ public class GameController {
     public void onNewGame(ActionEvent actionEvent) {
         // reset variables
         selectedPiece = null;
+        undoTracker.clear();
         model.clearBoard();
 
         // Generating random numbers
@@ -189,6 +190,13 @@ public class GameController {
     }
 
     public void onUndo(ActionEvent actionEvent) {
+       //gets the last element of the moveTracker arraylist
+        MoveTracker lastMove = undoTracker.get(undoTracker.size()-1);
+        //moves the piece back to its previous position
+        model.move(lastMove.getPrevRow(),lastMove.getPrevCol(),lastMove.getPrevPiece());
+        //removes the last element of the arraylist
+        undoTracker.remove(undoTracker.size()-1);
+
     }
 
     public void onRedo(ActionEvent actionEvent) {
