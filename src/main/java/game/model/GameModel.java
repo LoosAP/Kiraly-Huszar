@@ -71,6 +71,30 @@ public class GameModel {
             }
         }
     }
+    //gets the row of a piece
+    public int getRow(SquareStates piece){
+        switch (piece){
+            case KING -> {
+                return kingRow;
+            }
+            case KNIGHT -> {
+                return knightRow;
+            }
+        }
+        return -1;
+    }
+    //gets the column of a piece
+    public int getCol(SquareStates piece){
+        switch (piece){
+            case KING -> {
+                return kingCol;
+            }
+            case KNIGHT -> {
+                return knightCol;
+            }
+        }
+        return -1;
+    }
 
     public void setBoard(int x,int y, SquareStates state) {
         board[x][y].set(state);
