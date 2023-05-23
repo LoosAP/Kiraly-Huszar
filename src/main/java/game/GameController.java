@@ -2,6 +2,7 @@ package game;
 
 import game.model.GameModel;
 import game.model.SquareStates;
+import javafx.application.Platform;
 import javafx.beans.binding.ObjectBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -192,6 +193,14 @@ public class GameController {
     }
 
     public void onExit(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Exit");
+        alert.setHeaderText("Are you sure you want to exit?");
+        alert.setContentText("All unsaved progress will be lost");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            Platform.exit();
+        }
     }
 
     public void onUndo(ActionEvent actionEvent) {
