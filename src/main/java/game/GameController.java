@@ -96,7 +96,7 @@ public class GameController {
                 System.out.printf("%s cannot move to (%d,%d)%n",selectedPiece,row,col);
             }
         }
-        // TODO: if successfully moved into goal
+        // if successfully moved into goal
         else if (newSelectedState == GOAL && selectedPiece != null){
             if (model.canMovePiece(row,col,selectedPiece)){
                 model.move(row,col,selectedPiece);
@@ -112,9 +112,16 @@ public class GameController {
 
         // if the selectedPiece is null and clicked on a square occupied by a valid chess piece
         else if (selectedPiece == null && newSelectedState != NONE && newSelectedState != GOAL){
-            selectedPiece = newSelectedState;
+            if (model.isInCheck(newSelectedState)){
+                selectedPiece = newSelectedState;
+                System.out.printf("Selected %s on square (%d,%d)%n",selectedPiece,row,col);
+            }
+            else {
+                System.out.printf("%s is not in check%n",newSelectedState);
+            }
 
-            System.out.printf("Selected %s on square (%d,%d)%n",selectedPiece,row,col);
+
+
         }
         // if clicked on the same piece as before
         else if (selectedPiece == newSelectedState){
