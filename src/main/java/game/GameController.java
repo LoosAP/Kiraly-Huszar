@@ -16,6 +16,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -194,6 +198,15 @@ public class GameController {
     }
 
     public void onAbout(ActionEvent actionEvent) {
+        try {
+            URI uri = URI.create("https://github.com/INBPM0420L/homework-project-LoosAP");
+            Desktop desktop = Desktop.getDesktop();
+            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                desktop.browse(uri);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void winGame(){
