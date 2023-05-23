@@ -5,6 +5,8 @@ import game.model.SquareStates;
 import javafx.beans.binding.ObjectBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,6 +17,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import static game.model.GameModel.SIZE;
@@ -94,6 +97,18 @@ public class GameController {
             }
         }
         // TODO: if successfully moved into goal
+        else if (newSelectedState == GOAL && selectedPiece != null){
+            if (model.canMovePiece(row,col,selectedPiece)){
+                model.move(row,col,selectedPiece);
+                System.out.printf("%s successfully moved into goal%n",selectedPiece);
+                selectedPiece = null;
+                winGame();
+            }
+            else {
+                System.out.printf("%s cannot move to (%d,%d)%n",selectedPiece,row,col);
+            }
+
+        }
 
         // if the selectedPiece is null and clicked on a square occupied by a valid chess piece
         else if (selectedPiece == null && newSelectedState != NONE && newSelectedState != GOAL){
@@ -165,5 +180,23 @@ public class GameController {
     }
 
     public void onAbout(ActionEvent actionEvent) {
+    }
+
+    public void winGame(){
+        // An alert window that shows the user has won the game, and asks if they want to play again
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Congratulations!");
+        alert.setHeaderText("You have won the game!");
+        alert.setContentText("Would you like to play again?");
+
+        // if the user clicks yes, then the game will reset and start a new game
+        Optional<ButtonType> result = alert.showAndWait();
+        if (((Optional<?>) result).get() == ButtonType.OK){
+            onNewGame(null);
+        }
+        // if the user clicks no, then the game closes
+        else {
+            System.exit(0);
+        }
     }
 }
