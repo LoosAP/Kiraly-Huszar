@@ -17,6 +17,13 @@ public class MoveTracker {
         this.prevRow = prevRow;
         this.prevCol = prevCol;
     }
+    public MoveTracker(){
+        this.currentRow = -1;
+        this.currentCol = -1;
+        this.prevPiece = SquareStates.NONE;
+        this.prevRow = -1;
+        this.prevCol = -1;
+    }
 
 
     public int getCurrentRow() {
