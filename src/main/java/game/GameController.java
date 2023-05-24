@@ -1,5 +1,8 @@
 package game;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import game.model.GameModel;
 import game.model.SquareStates;
 import javafx.application.Platform;
@@ -15,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -186,10 +190,37 @@ public class GameController {
         model.setGoal(goalX,goalY);
     }
 
-    public void onSave(ActionEvent actionEvent) {
+    public void onSave(ActionEvent actionEvent) throws JsonProcessingException {
+        // stores the current state of the board, the undoTracker and the redoTracker using jackson
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayList<Object> save = new ArrayList<>();
+        save.add(model.getPositions());
+        save.add(objectMapper.writeValueAsString(undoTracker));
+        save.add(objectMapper.writeValueAsString(redoTracker));
+        try {
+            objectMapper.writeValue(new File("save.json"),save);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void onLoad(ActionEvent actionEvent) {
+    public void onLoad(ActionEvent actionEvent) throws JsonProcessingException {
+        // loads save.json sets the board to the saved state, and sets the undoTracker and redoTracker to the saved state
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayList<Object> load = new ArrayList<>();
+        try {
+            load = objectMapper.readValue(new File("save.json"), new TypeReference<ArrayList<Object>>() {});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        model.setPositions((ArrayList<Integer>) load.get(0));
+        undoTracker.clear();
+        redoTracker.clear();
+        undoTracker= objectMapper.readValue((String) load.get(1), new TypeReference<ArrayList<MoveTracker>>() {});
+        redoTracker= objectMapper.readValue((String) load.get(2), new TypeReference<ArrayList<MoveTracker>>() {});
+
+
     }
 
     public void onExit(ActionEvent actionEvent) {
@@ -235,9 +266,6 @@ public class GameController {
         catch (Exception e){
             System.out.println("No more moves to redo");
         }
-    }
-
-    public void onHints(ActionEvent actionEvent) {
     }
 
     public void onAbout(ActionEvent actionEvent) {
