@@ -4,6 +4,7 @@ import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameModel {
@@ -176,7 +177,20 @@ public class GameModel {
         }
     }
 
-
+    //gets the row and column of each piece, used for saving
+    public List<Integer> getPositions(){
+        return List.of(kingRow,kingCol,knightRow,knightCol,goalRow,goalCol);
+    }
+    //sets the positions of each piece, used for loading
+    public void setPositions(ArrayList<Integer> readValue) {
+        clearBoard();
+        setKing(readValue.get(0), readValue.get(1));
+        setBoard(kingRow,kingCol,SquareStates.KING);
+        setKnight(readValue.get(2), readValue.get(3));
+        setBoard(knightRow,knightCol,SquareStates.KNIGHT);
+        setGoal(readValue.get(4), readValue.get(5));
+        setBoard(goalRow,goalCol,SquareStates.GOAL);
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
