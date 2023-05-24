@@ -1,3 +1,8 @@
-# TODO: a title for your project
+# A Király és huszár kihívás
 
-TODO: a detailed description of your project (must contain at least the original description of the assignment)
+Adott egy sakktábla, amelyre egy huszárt és egy királyt helyezünk a lenti ábrán látható módon. 
+
+![](img/kiraly_es_huszar.png)
+
+A feladat az, hogy valamelyik figurával a megjelölt
+mezőre lépjünk. Csak azzal a figurával lehet lépni a sakklépéseknek megfelelően, amelyik éppen ütésben van a másik által.
