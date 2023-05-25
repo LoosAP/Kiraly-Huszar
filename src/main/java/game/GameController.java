@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.tinylog.Logger;
 
 import java.awt.*;
 import java.io.File;
@@ -118,23 +119,23 @@ public class GameController {
                 undoTracker.add(new MoveTracker(row,col,selectedPiece,model.getRow(selectedPiece),model.getCol(selectedPiece)));
                 redoTracker.clear();
                 model.move(row,col,selectedPiece);
-
+                Logger.debug("{} successfully moved to ({},{})",selectedPiece,row,col);
                 selectedPiece = null;
             }
             else {
-                System.out.printf("%s cannot move to (%d,%d)%n",selectedPiece,row,col);
+                Logger.debug("{} cannot move to ({},{})",selectedPiece,row,col);
             }
         }
         // if successfully moved into goal
         else if (newSelectedState == GOAL && selectedPiece != null){
             if (model.canMovePiece(row,col,selectedPiece)){
                 model.move(row,col,selectedPiece);
-                System.out.printf("%s successfully moved into goal%n",selectedPiece);
+                Logger.debug("{} successfully moved into goal",selectedPiece);
                 selectedPiece = null;
                 winGame();
             }
             else {
-                System.out.printf("%s cannot move to (%d,%d)%n",selectedPiece,row,col);
+                Logger.debug("{} cannot move to ({},{})",selectedPiece,row,col);
             }
 
         }
@@ -143,10 +144,10 @@ public class GameController {
         else if (selectedPiece == null && newSelectedState != NONE && newSelectedState != GOAL){
             if (model.isInCheck(newSelectedState)){
                 selectedPiece = newSelectedState;
-                System.out.printf("Selected %s on square (%d,%d)%n",selectedPiece,row,col);
+                Logger.debug("Selected {} on square ({},{})",selectedPiece,row,col);
             }
             else {
-                System.out.printf("%s is not in check%n",newSelectedState);
+                Logger.debug("{} is not in check",newSelectedState);
             }
 
 
@@ -154,7 +155,7 @@ public class GameController {
         }
         // if clicked on the same piece as before
         else if (selectedPiece == newSelectedState){
-            System.out.printf("Deselected %s %n",selectedPiece);
+            Logger.debug("Deselected {}",selectedPiece);
             selectedPiece = null;
         }
 
@@ -164,6 +165,7 @@ public class GameController {
      * Clears the board and sets the pieces to a new random position
      */
     public void onNewGame(ActionEvent actionEvent) {
+        Logger.debug("New game started");
         // reset variables
         selectedPiece = null;
         undoTracker.clear();
@@ -210,6 +212,7 @@ public class GameController {
      * Saves the current state of the board, the undoTracker and the redoTracker using jackson
      */
     public void onSave(ActionEvent actionEvent) throws JsonProcessingException {
+        Logger.debug("Saving game...");
         // stores the current state of the board, the undoTracker and the redoTracker using jackson
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<Object> save = new ArrayList<>();
@@ -219,7 +222,7 @@ public class GameController {
         try {
             objectMapper.writeValue(new File("save.json"),save);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error(e,"Error saving game");
         }
 
     }
@@ -228,13 +231,14 @@ public class GameController {
      * Loads the save.json file and sets the board to the saved state, and sets the undoTracker and redoTracker to the saved state
      */
     public void onLoad(ActionEvent actionEvent) throws JsonProcessingException {
+        Logger.debug("Loading game...");
         // loads save.json sets the board to the saved state, and sets the undoTracker and redoTracker to the saved state
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<Object> load = new ArrayList<>();
         try {
             load = objectMapper.readValue(new File("save.json"), new TypeReference<ArrayList<Object>>() {});
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error(e,"Error loading game");
         }
         model.setPositions((ArrayList<Integer>) load.get(0));
         undoTracker.clear();
@@ -249,6 +253,7 @@ public class GameController {
      * A popup window that asks the user if they want to exit the game
      */
     public void onExit(ActionEvent actionEvent) {
+        Logger.debug("Exiting game...");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit");
         alert.setHeaderText("Are you sure you want to exit?");
@@ -263,6 +268,7 @@ public class GameController {
      * Undoes the last move
      */
     public void onUndo(ActionEvent actionEvent) {
+        Logger.debug("Undoing move");
         try{
             //gets the last element of the moveTracker arraylist
             MoveTracker lastMove = undoTracker.get(undoTracker.size()-1);
@@ -274,7 +280,7 @@ public class GameController {
             undoTracker.remove(undoTracker.size()-1);
         }
         catch (Exception e){
-            System.out.println("No more moves to undo");
+            Logger.debug("No more moves to undo");
         }
 
 
@@ -284,6 +290,7 @@ public class GameController {
      * Redoes the last move
      */
     public void onRedo(ActionEvent actionEvent) {
+        Logger.debug("Redoing move");
         try{
             //gets the last element of the redoTracker arraylist
             MoveTracker lastMove = redoTracker.get(redoTracker.size()-1);
@@ -295,7 +302,7 @@ public class GameController {
             redoTracker.remove(redoTracker.size()-1);
         }
         catch (Exception e){
-            System.out.println("No more moves to redo");
+            Logger.debug("No more moves to redo");
         }
     }
 
@@ -303,6 +310,7 @@ public class GameController {
      * Opens a link to the github repository
      */
     public void onAbout(ActionEvent actionEvent) {
+        Logger.debug("Opening github link");
         try {
             URI uri = URI.create("https://github.com/INBPM0420L/homework-project-LoosAP");
             Desktop desktop = Desktop.getDesktop();
@@ -310,7 +318,7 @@ public class GameController {
                 desktop.browse(uri);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error("Failed to open github link");
         }
     }
 
@@ -320,6 +328,7 @@ public class GameController {
      * If the user clicks no, then the game closes
      */
     public void winGame(){
+        Logger.debug("Game won");
         // An alert window that shows the user has won the game, and asks if they want to play again
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Congratulations!");
@@ -333,6 +342,7 @@ public class GameController {
         }
         // if the user clicks no, then the game closes
         else {
+            Logger.debug("Exiting game");
             System.exit(0);
         }
     }
