@@ -97,6 +97,9 @@ public class GameModel {
             case KNIGHT -> {
                 return knightRow;
             }
+            case GOAL -> {
+                return goalRow;
+            }
         }
         return -1;
     }
@@ -113,6 +116,9 @@ public class GameModel {
             }
             case KNIGHT -> {
                 return knightCol;
+            }
+            case GOAL -> {
+                return goalCol;
             }
         }
         return -1;

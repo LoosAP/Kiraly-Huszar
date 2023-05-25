@@ -102,7 +102,7 @@ public class GameController {
      * @param event the mouse click event
      */
     @FXML
-    private void handleMouseClick(MouseEvent event) {
+    public void handleMouseClick(MouseEvent event) {
         var square = (StackPane) event.getSource();
         var row = GridPane.getRowIndex(square);
         var col = GridPane.getColumnIndex(square);
