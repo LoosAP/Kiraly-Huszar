@@ -2,6 +2,15 @@ package game;
 
 import game.model.SquareStates;
 
+/**
+ * This class is used to keep track of the moves made by the pieces.
+ * It is used to undo and redo moves.
+ * @param currentRow the row of the piece that was moved
+ * @param currentCol the column of the piece that was moved
+ * @param prevPiece the piece that was previously in the square
+ * @param prevRow the row of the piece that was previously in the square
+ * @param prevCol the column of the piece that was previously in the square
+ */
 public class MoveTracker {
     private int currentRow;
     private int currentCol;

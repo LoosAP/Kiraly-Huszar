@@ -9,7 +9,13 @@ import java.util.List;
 
 public class GameModel {
 
+    /**
+     * The size of the board.
+     */
     public static int SIZE = 8;
+    /**
+     * The valid moves of a knight.
+     */
 
     private static final int[][] VALID_MOVES = {{-2,-1},{-2,1},{-1,-2},{-1,2},{1,-2},{1,2},{2,-1},{2,1}};
 
@@ -22,11 +28,17 @@ public class GameModel {
     private int goalRow;
     private int goalCol;
 
+    /**
+     * The board of the game.
+     */
     private ReadOnlyObjectWrapper<SquareStates>[][] board = new ReadOnlyObjectWrapper[SIZE][SIZE];
     public GameModel() {
         initializeBoard();
     }
 
+    /**
+     * Initializes the board.
+     */
     private void initializeBoard(){
         for (var i = 0; i < SIZE; i++) {
             for (var j = 0; j < SIZE; j++) {
@@ -72,7 +84,11 @@ public class GameModel {
             }
         }
     }
-    //gets the row of a piece
+
+    /**
+     * Gets the row of a piece
+     * @param piece the piece we want to get the row of
+     */
     public int getRow(SquareStates piece){
         switch (piece){
             case KING -> {
@@ -84,7 +100,12 @@ public class GameModel {
         }
         return -1;
     }
-    //gets the column of a piece
+
+    /**
+     * Gets the column of a piece
+     * @param piece the piece we want to get the column of
+     * @return
+     */
     public int getCol(SquareStates piece){
         switch (piece){
             case KING -> {
@@ -100,7 +121,13 @@ public class GameModel {
     public void setBoard(int x,int y, SquareStates state) {
         board[x][y].set(state);
     }
-    //checks if the move we want to perform is valid
+
+    /**
+     * checks if the move we want to perform is valid
+     * @param row the row we want to move to
+     * @param col the column we want to move to
+     * @param selectedPiece the piece we want to move
+     */
     public boolean canMovePiece(Integer row,Integer col,SquareStates selectedPiece) {
         switch (selectedPiece){
             case KING -> {
@@ -126,6 +153,10 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Checks if a piece is in check
+     * @param selectedPiece the piece we want to check if it is in check
+     */
     public boolean isInCheck(SquareStates selectedPiece) {
         switch (selectedPiece){
             case KING -> {
@@ -150,7 +181,12 @@ public class GameModel {
         return false;
     }
 
-
+    /**
+     * Moves a piece to a new position
+     * @param row the row we want to move to
+     * @param col the column we want to move to
+     * @param currentSquare the square we want to move to
+     */
     public void move(Integer row, Integer col,SquareStates currentSquare) {
 
 
@@ -177,11 +213,16 @@ public class GameModel {
         }
     }
 
-    //gets the row and column of each piece, used for saving
+    /**
+     * Gets the positions of each piece and the goal, and stores them in a list
+     */
     public List<Integer> getPositions(){
         return List.of(kingRow,kingCol,knightRow,knightCol,goalRow,goalCol);
     }
-    //sets the positions of each piece, used for loading
+    /**
+     * Sets the positions of each piece and the goal
+     * @param readValue the list of positions we want to set
+     */
     public void setPositions(ArrayList<Integer> readValue) {
         clearBoard();
         setKing(readValue.get(0), readValue.get(1));
@@ -192,6 +233,9 @@ public class GameModel {
         setBoard(goalRow,goalCol,SquareStates.GOAL);
     }
 
+    /**
+     * Prints the board
+     */
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (var i = 0; i < SIZE; i++) {

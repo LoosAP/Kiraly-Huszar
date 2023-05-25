@@ -30,7 +30,10 @@ public class GameApplication extends Application {
         });
     }
 
-    // method to close the program
+    /**
+     * Shows a confirmation dialog before exiting the application.
+     * @param stage The stage to close.
+     */
     private void closeProgram(Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit");

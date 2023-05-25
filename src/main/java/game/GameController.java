@@ -36,10 +36,14 @@ public class GameController {
 
     private GameModel model = new GameModel();
 
-    // tracks the moves made by the player
+    /**
+     * Stores the moves made by the user
+     */
     ArrayList<MoveTracker> undoTracker = new ArrayList<>();
 
-    // tracks the moves made by undoTracker
+    /**
+     * Stores the moves undone by the user
+     */
     ArrayList<MoveTracker> redoTracker = new ArrayList<>();
 
     @FXML
@@ -51,6 +55,13 @@ public class GameController {
             }
         }
     }
+
+    /**
+     * Creates a square with the specified row and column
+     * @param i the row
+     * @param j the column
+     * @return the square
+     */
     private StackPane createSquare(int i, int j) {
         var square = new StackPane();
         square.getStyleClass().add("square");
@@ -84,6 +95,11 @@ public class GameController {
     }
 
     private SquareStates selectedPiece = null;
+
+    /**
+     * Handles the mouse click event
+     * @param event the mouse click event
+     */
     @FXML
     private void handleMouseClick(MouseEvent event) {
         var square = (StackPane) event.getSource();
@@ -144,9 +160,9 @@ public class GameController {
 
     }
 
-
-
-
+    /**
+     * Clears the board and sets the pieces to a new random position
+     */
     public void onNewGame(ActionEvent actionEvent) {
         // reset variables
         selectedPiece = null;
@@ -190,6 +206,9 @@ public class GameController {
         model.setGoal(goalX,goalY);
     }
 
+    /**
+     * Saves the current state of the board, the undoTracker and the redoTracker using jackson
+     */
     public void onSave(ActionEvent actionEvent) throws JsonProcessingException {
         // stores the current state of the board, the undoTracker and the redoTracker using jackson
         ObjectMapper objectMapper = new ObjectMapper();
@@ -205,6 +224,9 @@ public class GameController {
 
     }
 
+    /**
+     * Loads the save.json file and sets the board to the saved state, and sets the undoTracker and redoTracker to the saved state
+     */
     public void onLoad(ActionEvent actionEvent) throws JsonProcessingException {
         // loads save.json sets the board to the saved state, and sets the undoTracker and redoTracker to the saved state
         ObjectMapper objectMapper = new ObjectMapper();
@@ -223,6 +245,9 @@ public class GameController {
 
     }
 
+    /**
+     * A popup window that asks the user if they want to exit the game
+     */
     public void onExit(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Exit");
@@ -234,6 +259,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Undoes the last move
+     */
     public void onUndo(ActionEvent actionEvent) {
         try{
             //gets the last element of the moveTracker arraylist
@@ -252,6 +280,9 @@ public class GameController {
 
     }
 
+    /**
+     * Redoes the last move
+     */
     public void onRedo(ActionEvent actionEvent) {
         try{
             //gets the last element of the redoTracker arraylist
@@ -268,6 +299,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Opens a link to the github repository
+     */
     public void onAbout(ActionEvent actionEvent) {
         try {
             URI uri = URI.create("https://github.com/INBPM0420L/homework-project-LoosAP");
@@ -280,6 +314,11 @@ public class GameController {
         }
     }
 
+    /**
+     * If the user has won the game, then an alert window will pop up asking if the user wants to play again
+     * If the user clicks yes, then the game will reset and start a new game
+     * If the user clicks no, then the game closes
+     */
     public void winGame(){
         // An alert window that shows the user has won the game, and asks if they want to play again
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
